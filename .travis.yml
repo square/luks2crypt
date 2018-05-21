@@ -1,0 +1,41 @@
+language: go
+go:
+- 1.10.x
+- master
+matrix:
+  fast_finish: true
+  allow_failures:
+  - go: master
+env:
+  global:
+  - DEP_VERSION="0.4.1"
+  matrix:
+  - GOOS=linux GOARCH=amd64
+addons:
+  apt:
+    packages:
+    - libcryptsetup-dev
+before_install:
+- curl -L -s https://github.com/golang/dep/releases/download/v${DEP_VERSION}/dep-linux-amd64
+  -o ${GOPATH}/bin/dep
+- chmod +x ${GOPATH}/bin/dep
+install:
+- dep ensure
+script:
+- diff -u <(echo -n) <(gofmt -d .)
+- go test -v -x -ldflags "-X main.VERSION=${TRAVIS_TAG}"
+before_deploy:
+- tar -xzvf luks2crypt-${TRAVIS_TAG}-${GOOS}-${GOARCH}.tar.gz luks2crypt README COPYING LICENSE
+jobs:
+  include:
+  - stage: build
+    go: 1.10.x
+    script: go build -v -ldflags "-X main.VERSION=${TRAVIS_TAG}"
+    deploy:
+      provider: releases
+      file: luks2crypt-${TRAVIS_TAG}-${GOOS}-${GOARCH}.tar.gz
+      api_key:
+        secure: 3KtpzyD+AjikH2l0kEexLoABLoMGNOf0oBRR6eQSn1SkVMJbeaM0KU7+1vXk48aq5ujuF+3Bk72wecG+gkXKAwfOSUYgfcJXt/M3CHMT1qOKPrmcr8cgSTXgAxoRAx9tOXLwXJpc3rweZrNFnE0PuqvOkWNwPH5vXV4tqySxai4g4t9XkSqnVf0jFasQVtwtRrOcreX/FWtXRtKnAUSXhDoeTxoXPyI68xSStTGo91Tb8W7GN7B/DdAAAaS8Rd3I6QIqtYSaPuuTwMfKqUEMfRGKXf4z0IVKwkeP9o6ciKKVEsRMu0u06aHUh8LH0jzJw/iMLKvmVCN3fh2ZirDkD7O7PmR91tb58SfOrXmvReLhSs2avqMge7HT5aHgFUCUvIFMJyt7JcIop3Md+xwCDuj4HNwkV0LCYxl6CsyaDGaCXZ2K3qysE522NUqQL9a2azeMAsV1uv+ddKr18wSbdwCya+EX8fCyBVP1THiBd7g/l5LWpvR3qfwg3CW+2KxlKrBwJCFHdMioaoEENnHszb4uX2xBJm49oJfeieYPTGuUxulLBBzKLbYF0cCyhnQmNCnoA06bzaXmmAvjzBS1Sgf34tMdcSVaY5b9HWUhaXi2T1F1UDtlWPIesprLeW2fqMfCkpMBhIbxyEbk9yjz4N6u0zFd7nI1CxwpYYlU7Wo=
+      skip_cleanup: true
+      on:
+        tags: true
