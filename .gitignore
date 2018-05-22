@@ -1,3 +1,5 @@
 .DS_Store
 luks2crypt
 vendor
+tmp
+*.tar.gz
