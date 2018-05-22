@@ -25,7 +25,7 @@ script:
 - diff -u <(echo -n) <(gofmt -d .)
 - go test -v -x -ldflags "-X main.VERSION=${TRAVIS_TAG}"
 before_deploy:
-- tar -czvf luks2crypt-${TRAVIS_TAG}-${GOOS}-${GOARCH}.tar.gz luks2crypt README COPYING LICENSE
+- tar -czvf luks2crypt-${TRAVIS_TAG}-${GOOS}-${GOARCH}.tar.gz luks2crypt README.md COPYING LICENSE
 jobs:
   include:
   - stage: build
