@@ -35,7 +35,7 @@ jobs:
       provider: releases
       file: luks2crypt-${TRAVIS_TAG}-${GOOS}-${GOARCH}.tar.gz
       api_key:
-        secure: HjrbRxOnOiKoPHiVUoDOPvuCQGL+oap6Xw+Ix+F4E3Q9Q4OlXVvcvEHIDDQZJMiCeyGn8vqwYY2G3YVHP62mjzB7u+z84hCqQs/xlorsouj7WDrWQuAjjUG6Qubz+Kxpxqjw0P3C5Zjyg7zFd78d/DE3kp4aGkuRed0cEZjHArNAlC3czJ2lRp/ZFYGuHyGrH5kvcR5088W94TNgJmR++h9V4Edkw8I51nK5EhDKsB5Wu/Jr7QF8ydIVFYZ4Fy/3a8jGPpo4uRiCokDA1cplbXMkRk5TYPtWd8xddRfOM3ofo873kGc3l1telqJlg8GsdIaaftv+b4cA5q3VwxZtdmSsKK5pexpkzJ9KQpzkYQ82kEcMdCBYhDP64jJzvUEqU/9d9CIwBsvV9m5iCvPbebrXER276DIqhniJs2Rm8yd6rIZDNhLKxIUVGw1TlT0JgK8tU+JA8Qdy1Fx8FAZURcdCk5hkMhicAhV4DtziE6E6QowcM6KFhRkSJ5zMMiVAS7vjVASphNz6wWxy/E5f6Yfzmt4dZvGwuMgGX/PGQKhG6mcAq21//3jwO774nF14HykfG6zWxGWLds0U46IHUVi9UffwjuwpWwQJW5LHjIJIQnW5XKb1vPPn++kzJ/nYfdstduim+A7HoqNKdhJ7/R7M9K11Ucu2DqA5bmUe2yY=
+        secure: Le6DJgkY2iAiibFia6YIEIBXRXpEiexemW0tw4jwxo1q0KVREAMb3+tGLEJr/lcEncNVV3DXbQUtEJRwfT/J/NbZXc9+UkOPvgrwX7qP67w4COzM0C/ibm5r+kcCc1xqTk12rxenS3JSulkEz60nQniT2HmZBwQT+2T1LudY+qCKQYA/ceGhgX4F+9rU6LMGH8t3jbT4QRf5woz7Suk7wLzLde+dS2M3fPHn716Y/mjYIaFIJH0EGSr/eWSrG9t50umwscaRZKEyWJJbL4BMl3ES1w3cPhKydM7+y+HcIEnzxlOstCfqxPQnAg6fdcCFNUHFrqVZn3GM5lj1Y7sLLDeuC9D919UoHMAGVydzbkoC0qKPL4hB217IY0rSoV8z0KuEDdQXC9AnMNfBUg+lhCvt7t+XBdf+w4QbjIzP+5YzAbusEXFtCBtSLdc8c7GsGKBtsN7wxpd5ZD6LdotSyzQ3Dj/ca9/2nJPp5IAZhCFk8Jpp3Xl+pGRx12xm7nNnG42OZshxrgl/+rlKnytoxujeZ6crw3iuoJhMVHDJNK1XuNTspdnOL4oDfyoVs4H++qFjx0EocW6YP3GQSQKFqP0QuooRwgZY3C1n/8HWLfTysXMIGqa24URlQ+litbNHJ07YDnFZk+TlUybtVfY+8g4KcRtC3tF9Fq2+PI7fWpU=
       skip_cleanup: true
       on:
         tags: true
