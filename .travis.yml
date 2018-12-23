@@ -1,6 +1,6 @@
 language: go
 go:
-- 1.10.x
+- 1.11.x
 - master
 matrix:
   fast_finish: true
@@ -8,7 +8,7 @@ matrix:
   - go: master
 env:
   global:
-  - DEP_VERSION="0.4.1"
+  - DEP_VERSION="0.5.0"
   matrix:
   - GIMME_OS=linux GIMME_ARCH=amd64
 addons:
@@ -31,7 +31,7 @@ before_deploy:
 jobs:
   include:
   - stage: build
-    go: 1.10.x
+    go: 1.11.x
     script: go build -v -ldflags "-X main.VERSION=${TRAVIS_TAG}"
     deploy:
       provider: releases
