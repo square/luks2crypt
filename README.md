@@ -43,16 +43,18 @@ Setting the admin password and escrowing it post imaging:
 Development
 -----------
 
-- Install golang dep (https://github.com/golang/dep/blob/master/README.md)
+- This repository uses go modules (https://github.com/golang/go/wiki/Modules).
+You should be able to simply `go get` the repo and the dependencies will
+auto install. You will need to be using go version 1.11 or higher.
 
 - The cryptsetup libs are required to build. Cryptsetup C libraries are used
 through cgo to manage the encrypted devices. On debian/ubuntu you can run:
 
       sudo apt install libcryptsetup-dev
 
-- Install deps required for project with `dep`:
+- To prepare for a release by cleaning up the unused dependencies run:
 
-      dep ensure
+      go mod tidy
 
 
 License
