@@ -1,5 +1,7 @@
 .DS_Store
+.vagrant
 luks2crypt
 vendor
 tmp
 *.tar.gz
+*-cloudimg-console.log
