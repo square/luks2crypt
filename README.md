@@ -56,6 +56,14 @@ through cgo to manage the encrypted devices. On debian/ubuntu you can run:
 
       go mod tidy
 
+- If you need a test enviornment the provided `Vagrantfile` creates an ubuntu
+  vm. The vagrantfile has a provision script that creates a luks disk image at
+  `/home/vagrant/luks-dev-disk.img`. The image is then encrypted with the password
+  "devpassword" and mounted at `/mnt`.
+
+      vagrant up       # create the dev vm
+      vagrant ssh      # connect to the consule of the vm
+      vagrant destroy  # delete the vm
 
 License
 -------
