@@ -12,7 +12,7 @@ import (
 
 	"github.com/square/luks2crypt/postimaging"
 
-	"gopkg.in/urfave/cli.v1"
+	cli "gopkg.in/urfave/cli.v1"
 )
 
 var (
