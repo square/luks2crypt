@@ -56,7 +56,7 @@ through cgo to manage the encrypted devices. On debian/ubuntu you can run:
 
       go mod tidy
 
-- If you need a test enviornment the provided `Vagrantfile` creates an ubuntu
+- If you need a test enviornment, the provided `Vagrantfile` creates an ubuntu
   vm. The vagrantfile has a provision script that creates a luks disk image at
   `/home/vagrant/luks-dev-disk.img`. The image is then encrypted with the password
   "devpassword" and mounted at `/mnt`.
@@ -64,6 +64,23 @@ through cgo to manage the encrypted devices. On debian/ubuntu you can run:
       vagrant up       # create the dev vm
       vagrant ssh      # connect to the consule of the vm
       vagrant destroy  # delete the vm
+
+  This also includes a mock implimentation of crypt-server to log the form
+  data to stdout. You can launch the dev environment as follows:
+
+      vagrant up
+      vagrant ssh
+      sudo cryptservermock  # start the mock crypt-server
+      
+      # in a new term window test the client
+      vagrant ssh
+      sudo /vagrant/luks2crypt postimaging \
+        -l ./luks-dev-disk.img \
+        -p devpassword \
+        -s ubuntu-bionic
+
+  You should then see the form post data printed to stdout from
+  `cryptservermock`.
 
 License
 -------
