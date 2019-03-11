@@ -1,6 +1,19 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+$golang_install = <<-SCRIPT
+set -ux
+GOLANGVER=1.12
+GOLANGTAR=https://dl.google.com/go/go${GOLANGVER}.linux-amd64.tar.gz
+
+pushd /tmp
+rm -rf /usr/local/go /tmp/go*.tar.gz
+wget --no-verbose "${GOLANGTAR}"
+tar -C /usr/local -xzf go${GOLANGVER}.linux-amd64.tar.gz
+echo 'export PATH=${PATH}:/usr/local/go/bin:${HOME}/go/bin' > /etc/profile.d/go-path.sh
+popd
+SCRIPT
+
 $create_luks_dev = <<-SCRIPT
 set -ux
 pushd /home/vagrant
@@ -19,12 +32,25 @@ echo "The device has a password of \"devpassword\" and is mounted at /mnt"
 popd
 SCRIPT
 
+$cryptservermock_install = <<-SCRIPT
+pushd /vagrant
+go build -v tools/cryptservermock/cryptservermock.go
+cp cryptservermock /usr/local/bin/
+popd
+SCRIPT
+
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/bionic64"
 
   config.vm.provision "shell",
-    inline: "apt install -y cryptsetup"
+    inline: "apt install -y cryptsetup ssl-cert"
+
+  config.vm.provision "shell", privileged: true,
+    inline: $golang_install
 
   config.vm.provision "shell", privileged: false,
     inline: $create_luks_dev
+
+  config.vm.provision "shell", privileged: true,
+    inline: $cryptservermock_install
 end
