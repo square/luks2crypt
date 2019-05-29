@@ -41,6 +41,9 @@ SCRIPT
 
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/bionic64"
+  config.vm.provider "virtualbox" do |v|
+    v.customize ["setextradata", :id, "VBoxInternal/Devices/pcbios/0/Config/DmiSystemSerial", "string:1234foobar"]
+  end
 
   config.vm.provision "shell",
     inline: "apt install -y cryptsetup ssl-cert"
