@@ -14,72 +14,98 @@ import (
 	"github.com/dselans/dmidecode"
 )
 
+type machine struct{}
+
+type machineGetter interface {
+	getSysSerialNumber() (string, error)
+	getHostname() (string, error)
+	getUsername() (string, error)
+}
+
 // SystemInfo stores sys serial number, hostname, and username
 type SystemInfo struct {
 	SerialNum, Hostname, Username string
 }
 
 // getSysSerialNumber returns the system serial number
-func getSysSerialNumber() (string, error) {
+func (i machine) getSysSerialNumber() (string, error) {
 	dmi := dmidecode.New()
 
-	dmiRunErr := dmi.Run()
-	if dmiRunErr != nil {
-		return "", dmiRunErr
+	err := dmi.Run()
+	if err != nil {
+		return "", err
 	}
 
-	byNameData, byNameErr := dmi.SearchByName("System Information")
-	if byNameErr != nil {
-		return "", byNameErr
+	byNameData, err := dmi.SearchByName("System Information")
+	if err != nil {
+		return "", err
 	}
 
 	return byNameData["Serial Number"], nil
 }
 
 // getHostname returns the system hostname
-func getHostname() (string, error) {
-	return os.Hostname()
+func (i machine) getHostname() (string, error) {
+	hostname, err := os.Hostname()
+	if err != nil {
+		return "", err
+	}
+	return hostname, nil
 }
 
 // getUsername returns the current username
-func getUsername() (string, error) {
-	username, err := user.Current()
-	return username.Username, err
+func (i machine) getUsername() (string, error) {
+	user, err := user.Current()
+	if err != nil {
+		return "", err
+	}
+	return user.Username, nil
 }
 
-// isRootUser returns true if we were run under root
-func (sysinfo SystemInfo) isRootUser() bool {
-	if sysinfo.Username == "root" {
+// isUser returns true if we were run under user u
+func (i SystemInfo) isUser(u string) bool {
+	if i.Username == u {
 		return true
 	}
 	return false
 }
 
+// GetInfo impliments the interface to gather system information such as
+// system serial number, hostname, and current user
+func getInfo(g machineGetter) (SystemInfo, error) {
+	var err error
+	i := SystemInfo{}
+
+	i.Hostname, err = g.getHostname()
+	if err != nil {
+		return SystemInfo{}, err
+	}
+
+	i.Username, err = g.getUsername()
+	if err != nil {
+		return SystemInfo{}, err
+	}
+
+	if !i.isUser("root") {
+		return SystemInfo{}, errors.New("not supported under current user please use sudo")
+	}
+
+	i.SerialNum, err = g.getSysSerialNumber()
+	if err != nil {
+		return SystemInfo{}, err
+	}
+
+	return i, nil
+}
+
 // Gather collects the system serial number, hostname, and current user
-func Gather() (*SystemInfo, error) {
-	sysinfo := &SystemInfo{}
+func Gather() (SystemInfo, error) {
+	g := machine{}
+	info, err := getInfo(g)
 
-	hostname, hostnameErr := getHostname()
-	if hostnameErr != nil {
-		return nil, hostnameErr
-	}
-	sysinfo.Hostname = hostname
-
-	username, usernameErr := getUsername()
-	if usernameErr != nil {
-		return nil, usernameErr
-	}
-	sysinfo.Username = username
-
-	if !sysinfo.isRootUser() {
-		return nil, errors.New("not supported under current user please use sudo")
+	if err != nil {
+		return SystemInfo{}, err
 	}
 
-	serial, serialErr := getSysSerialNumber()
-	if serialErr != nil {
-		return nil, serialErr
-	}
-	sysinfo.SerialNum = serial
-
-	return sysinfo, nil
+	return info, nil
 }

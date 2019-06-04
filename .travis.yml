@@ -18,7 +18,7 @@ addons:
 install: true
 script:
 - diff -u <(echo -n) <(gofmt -d .)
-- go test -v -x -ldflags "-X main.VERSION=${TRAVIS_TAG}"
+- go test -v -ldflags "-X main.VERSION=${TRAVIS_TAG}" ./...
 before_deploy:
 - mkdir -p tmp/luks2crypt
 - cp luks2crypt README.md COPYING LICENSE tmp/luks2crypt/
