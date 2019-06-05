@@ -27,7 +27,7 @@ type properties struct {
 
 // generate creates a unique and sufficently long set of chars to be
 // used as a password
-func generate(prop *properties) string {
+func generate(prop properties) string {
 	list, err := diceware.Generate(prop.numWords)
 	if err != nil {
 		log.Fatal(err)
@@ -36,7 +36,7 @@ func generate(prop *properties) string {
 }
 
 // validate checks if password is valid
-func (p password) validate(prop *properties) error {
+func (p password) validate(prop properties) error {
 	list := strings.Split(p.new, prop.wordSeperator)
 	if len(list) != prop.numWords {
 		return errors.New("generated password does not match requested length")
@@ -46,8 +46,8 @@ func (p password) validate(prop *properties) error {
 
 // New creates a new password and validates it
 func New() (string, error) {
-	props := &properties{numWords: 5, wordSeperator: "."}
-	pass := &password{new: generate(props)}
+	props := properties{numWords: 5, wordSeperator: "."}
+	pass := password{new: generate(props)}
 	validationErr := pass.validate(props)
 	if validationErr != nil {
 		return "", validationErr
