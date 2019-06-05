@@ -1,6 +1,6 @@
 language: go
 go:
-- 1.11.x
+- 1.12.x
 - master
 matrix:
   fast_finish: true
@@ -26,7 +26,7 @@ before_deploy:
 jobs:
   include:
   - stage: build
-    go: 1.11.x
+    go: 1.12.x
     script: go build -v -ldflags "-X main.VERSION=${TRAVIS_TAG}"
     deploy:
       provider: releases
