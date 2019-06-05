@@ -21,8 +21,8 @@ var (
 	VERSION = "0.0.1"
 )
 
-// main setups up cli arg handling
-func main() {
+// run setups up cli arg handling and executes luks2crypt
+func run(args []string) error {
 	app := cli.NewApp()
 	app.Name = "luks2crypt"
 	app.Usage = "Generates a random luks password, escrows it, and rotates slot 0 on root."
@@ -52,7 +52,7 @@ func main() {
 		},
 	}
 
-	app.Run(os.Args)
+	return app.Run(args)
 }
 
 // optVersion returns the application version. Typically, this is the git sha
@@ -75,4 +75,12 @@ func optPostImaging(c *cli.Context) error {
 		return cli.NewExitError(err, 1)
 	}
 	return nil
+}
+
+// main calls run to execute luks2crypt
+func main() {
+	err := run(os.Args)
+	if err != nil {
+		os.Exit(1)
+	}
 }
