@@ -19,6 +19,9 @@ type CryptServerInfo struct {
 }
 
 // CryptServerData stores the data to be escrowed
+// cryptserver expects the following form data recovery_password, serial,
+// macname, username
+// see: https://github.com/grahamgilbert/Crypt-Server/blob/master/server/views.py#L442
 type CryptServerData struct {
 	Pass      string `schema:"recovery_password"`
 	Serialnum string `schema:"serial"`
@@ -33,15 +36,15 @@ func (data CryptServerData) PostCryptServer(escrowServer CryptServerInfo) (*http
 	encoder := schema.NewEncoder()
 	form := url.Values{}
 
-	encodeErr := encoder.Encode(data, form)
-	if encodeErr != nil {
-		return nil, encodeErr
+	err := encoder.Encode(data, form)
+	if err != nil {
+		return nil, err
 	}
 
 	client := new(http.Client)
-	res, postErr := client.PostForm(cryptServer, form)
-	if postErr != nil {
-		return nil, postErr
+	res, err := client.PostForm(cryptServer, form)
+	if err != nil {
+		return nil, err
 	}
 	return res, nil
 }
