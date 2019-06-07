@@ -56,6 +56,15 @@ through cgo to manage the encrypted devices. On debian/ubuntu you can run:
 
       go mod tidy
 
+- Standard go tools can be used to build luks2crypt:
+
+      go build
+
+- If you would like to use a mock crypt server to test client changes on is
+  included in this project:
+
+      go build tools/cryptservermock/cryptservermock.go
+
 - If you need a test enviornment, the provided `Vagrantfile` creates an ubuntu
   vm. The vagrantfile has a provision script that creates a luks disk image at
   `/home/vagrant/luks-dev-disk.img`. The image is then encrypted with the password
@@ -70,14 +79,14 @@ through cgo to manage the encrypted devices. On debian/ubuntu you can run:
 
       vagrant up
       vagrant ssh
-      sudo cryptservermock  # start the mock crypt-server
+      sudo /vagrant/cryptservermock  # start the mock crypt-server
       
       # in a new term window test the client
       vagrant ssh
       sudo /vagrant/luks2crypt postimaging \
         -l ./luks-dev-disk.img \
         -p devpassword \
-        -s ubuntu-bionic
+        -s ubuntu-bionic:8443
 
   You should then see the form post data printed to stdout from
   `cryptservermock`.
