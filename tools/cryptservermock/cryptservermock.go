@@ -7,27 +7,37 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 )
 
+type cryptServerHandler struct{}
+
 // This is a simple webserver that listens on 127.0.0.1:443 and prints form data
 // Uses the snake oil certs and is useful in debuging luks2crypt escrow form data
+func (c *cryptServerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
+
+	for key, value := range r.Form {
+		log.Printf("%s = %s\n", key, value)
+	}
+}
+
 func main() {
-	http.HandleFunc("/checkin/", func(w http.ResponseWriter, r *http.Request) {
-		r.ParseForm()
+	mux := http.NewServeMux()
+	serv := &cryptServerHandler{}
 
-		for key, value := range r.Form {
-			fmt.Printf("%s = %s\n", key, value)
-		}
-	})
+	mux.Handle("/checkin/", serv)
 
+	log.Println("Listening...")
 	err := http.ListenAndServeTLS(
-		":443",
+		":8443",
 		"/etc/ssl/certs/ssl-cert-snakeoil.pem",
 		"/etc/ssl/private/ssl-cert-snakeoil.key",
-		nil,
+		mux,
 	)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
