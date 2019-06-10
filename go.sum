@@ -4,7 +4,5 @@ github.com/gorilla/schema v0.0.0-20171211185217-466360728514 h1:v6tTbb+AZF4hLlja
 github.com/gorilla/schema v0.0.0-20171211185217-466360728514/go.mod h1:kgLaKoK1FELgZqMAVxx/5cbj0kT+57qxUrAlIO2eleU=
 github.com/sethvargo/go-diceware v0.0.0-20171110191555-95bd91066dd1 h1:29fyULoq3z/W6GxTiLgjunVIdCMm4Q9hxu/+PwU19p4=
 github.com/sethvargo/go-diceware v0.0.0-20171110191555-95bd91066dd1/go.mod h1:e1FI16LZSMIO53uyHKuSboQslWoLQiVJjxLe31/Y6BI=
-github.com/square/luks2crypt v0.1.0 h1:adCgPGl/TMGxx1zixXQpw94rBKkwcEYE/QhqUwxCchs=
-github.com/square/luks2crypt v0.1.0/go.mod h1:v+Wzipae2uE7sJkwQDsnA6N4gk3eyP6Xg2kogZQVNzQ=
 gopkg.in/urfave/cli.v1 v1.20.0 h1:NdAVW6RYxDif9DhDHaAortIu956m2c0v+09AZBPTbE0=
 gopkg.in/urfave/cli.v1 v1.20.0/go.mod h1:vuBzUtMdQeixQj8LVd+/98pzhxNGQoyuPBlsXHOQNO0=
