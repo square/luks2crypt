@@ -22,14 +22,15 @@ type CacheData struct {
 }
 
 // mkConfDir creates the configuration dir. Typically, /etc/luks2crypt
-func (data *CacheData) mkConfDir() error {
+func (data CacheData) mkConfDir() error {
+	data.Path = path.Clean(data.Path)
 	confPath := path.Dir(data.Path)
 
-	if _, existErr := os.Stat(confPath); os.IsNotExist(existErr) {
+	if _, err := os.Stat(confPath); os.IsNotExist(err) {
 		log.Printf("creating config and cache dir: %s\n", confPath)
-		mkErr := os.Mkdir(confPath, os.FileMode(data.PathMode))
-		if mkErr != nil {
-			return mkErr
+		err = os.Mkdir(confPath, os.FileMode(data.PathMode))
+		if err != nil {
+			return err
 		}
 	}
 
@@ -37,10 +38,10 @@ func (data *CacheData) mkConfDir() error {
 }
 
 // marshalJSONData converts json data into a marshal byte blob for writting
-func (data *CacheData) marshalJSONData() ([]byte, error) {
-	marshal, marshalErr := json.MarshalIndent(data, "", "\t")
-	if marshalErr != nil {
-		return nil, marshalErr
+func (data CacheData) marshalJSONData() ([]byte, error) {
+	marshal, err := json.MarshalIndent(data, "", "  ")
+	if err != nil {
+		return nil, err
 	}
 	return marshal, nil
 }
@@ -48,25 +49,26 @@ func (data *CacheData) marshalJSONData() ([]byte, error) {
 // SaveToDisk saves the luks recovery password on disk
 // returns errors if any
 func SaveToDisk(newPass string, cacheFile string) (string, error) {
-	data := &CacheData{
+	data := CacheData{
 		AdminPassNew: newPass,
 		Path:         cacheFile,
 		PathMode:     0700,
 	}
 
-	marshalData, marshalDataErr := data.marshalJSONData()
-	if marshalDataErr != nil {
-		return "", marshalDataErr
+	marshalData, err := data.marshalJSONData()
+	if err != nil {
+		return "", err
 	}
 
-	mkdirErr := data.mkConfDir()
-	if mkdirErr != nil {
-		return "", mkdirErr
+	err = data.mkConfDir()
+	if err != nil {
+		return "", err
 	}
 
-	writeErr := ioutil.WriteFile(cacheFile, marshalData, 0600)
-	if writeErr != nil {
-		return "", writeErr
+	cacheFile = path.Clean(cacheFile)
+	err = ioutil.WriteFile(cacheFile, marshalData, 0600)
+	if err != nil {
+		return "", err
 	}
 	return cacheFile, nil
 }
