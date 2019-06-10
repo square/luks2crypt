@@ -20,6 +20,7 @@ type machineGetter interface {
 	getSysSerialNumber() (string, error)
 	getHostname() (string, error)
 	getUsername() (string, error)
+	isUser(string) bool
 }
 
 // SystemInfo stores sys serial number, hostname, and username
@@ -55,16 +56,23 @@ func (i machine) getHostname() (string, error) {
 
 // getUsername returns the current username
 func (i machine) getUsername() (string, error) {
+	if sudoUser := os.Getenv("SUDO_USER"); sudoUser != "" {
+		return sudoUser, nil
+	}
+
 	user, err := user.Current()
 	if err != nil {
 		return "", err
 	}
 	return user.Username, nil
+
 }
 
 // isUser returns true if we were run under user u
-func (i SystemInfo) isUser(u string) bool {
-	if i.Username == u {
+func (i machine) isUser(u string) bool {
+	currentUser, _ := user.Current()
+
+	if currentUser.Username == u {
 		return true
 	}
 	return false
@@ -86,7 +94,7 @@ func getInfo(g machineGetter) (SystemInfo, error) {
 		return SystemInfo{}, err
 	}
 
-	if !i.isUser("root") {
+	if !g.isUser("root") {
 		return SystemInfo{}, errors.New("not supported under current user please use sudo")
 	}
 

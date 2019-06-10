@@ -12,6 +12,7 @@ import (
 
 type FakeSystemInfo struct {
 	SerialNum, Hostname, Username string
+	isRoot                        bool
 }
 
 func (i FakeSystemInfo) getSysSerialNumber() (string, error) {
@@ -26,11 +27,16 @@ func (i FakeSystemInfo) getUsername() (string, error) {
 	return i.Username, nil
 }
 
+func (i FakeSystemInfo) isUser(u string) bool {
+	return i.isRoot
+}
+
 func TestGetInfo(t *testing.T) {
 	expected := FakeSystemInfo{
 		SerialNum: "1234FooBar",
 		Hostname:  "testing.example.com",
-		Username:  "root",
+		Username:  "testinguser",
+		isRoot:    true,
 	}
 
 	actual, err := getInfo(expected)
@@ -56,6 +62,7 @@ func TestNonrootGetInfo(t *testing.T) {
 	var expectedEmpty SystemInfo
 	expected := FakeSystemInfo{
 		Username: "testinguser",
+		isRoot:   false,
 	}
 
 	actual, err := getInfo(expected)
