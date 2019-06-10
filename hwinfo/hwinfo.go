@@ -41,7 +41,7 @@ func (i machine) getSysSerialNumber() (string, error) {
 		return "", err
 	}
 
-	return byNameData["Serial Number"], nil
+	return byNameData[0]["Serial Number"], nil
 }
 
 // getHostname returns the system hostname
