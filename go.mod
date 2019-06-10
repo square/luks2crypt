@@ -1,4 +1,4 @@
-module github.com/derektamsen/luks2crypt
+module github.com/square/luks2crypt
 
 require (
 	github.com/dselans/dmidecode v0.0.0-20150223062756-08eabb429b4a
