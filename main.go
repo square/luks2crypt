@@ -8,6 +8,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/square/luks2crypt/postimaging"
@@ -64,7 +65,7 @@ func optVersion(c *cli.Context) error {
 // optPostImaging sets up, rotates, and escrows the initial encryption password
 func optPostImaging(c *cli.Context) error {
 	cryptURL := "https://" + c.String("cryptserver")
-	opts := &postimaging.Opts{
+	opts := postimaging.Opts{
 		LuksDev: c.String("luksdevice"),
 		CurPass: c.String("currentpassword"),
 		Server:  cryptURL,
@@ -72,6 +73,7 @@ func optPostImaging(c *cli.Context) error {
 	}
 	err := postimaging.Run(opts)
 	if err != nil {
+		err = fmt.Errorf("error setting escrow passphrase: %v", err)
 		return cli.NewExitError(err, 1)
 	}
 	return nil
@@ -81,6 +83,6 @@ func optPostImaging(c *cli.Context) error {
 func main() {
 	err := run(os.Args)
 	if err != nil {
-		os.Exit(1)
+		log.Fatalf("error: %v", err)
 	}
 }
