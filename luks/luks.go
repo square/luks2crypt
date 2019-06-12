@@ -16,9 +16,9 @@ import (
 	"unsafe"
 )
 
-// LuksInfo holds info about the old and new passwords as well as the luks
+// Settings holds info about the old and new passwords as well as the luks
 // device
-type LuksInfo struct {
+type Settings struct {
 	OldPass, NewPass, LuksDevice string
 	LuksSlot                     int
 	cDevice                      *C.struct_crypt_device
@@ -36,7 +36,7 @@ func (e *Error) Error() string {
 }
 
 // cryptInit creates the libcryptsetup struct
-func (luksDevice *LuksInfo) cryptInit() (*C.struct_crypt_device, error) {
+func (luksDevice *Settings) cryptInit() (*C.struct_crypt_device, error) {
 	cDevice := C.CString(luksDevice.LuksDevice)
 	defer C.free(unsafe.Pointer(cDevice))
 
@@ -51,7 +51,7 @@ func (luksDevice *LuksInfo) cryptInit() (*C.struct_crypt_device, error) {
 }
 
 // load populates the libcryptsetup struct with device info from disk
-func (luksDevice *LuksInfo) load() error {
+func (luksDevice *Settings) load() error {
 	cCryptType := C.CString(C.CRYPT_LUKS1)
 	defer C.free(unsafe.Pointer(cCryptType))
 
@@ -66,7 +66,7 @@ func (luksDevice *LuksInfo) load() error {
 
 // getLuksSlot returns the luks slot number for a pass. Can also be used to
 // validate a password
-func (luksDevice *LuksInfo) getLuksSlot(pass string) (int, error) {
+func (luksDevice *Settings) getLuksSlot(pass string) (int, error) {
 	cPass := C.CString(pass)
 	defer C.free(unsafe.Pointer(cPass))
 
@@ -90,7 +90,7 @@ func (luksDevice *LuksInfo) getLuksSlot(pass string) (int, error) {
 }
 
 // changePassword uses an existing password and updates it to a new password
-func (luksDevice *LuksInfo) changePassword() (int, error) {
+func (luksDevice *Settings) changePassword() (int, error) {
 	var cExistingPass *C.char
 	if luksDevice.OldPass == "" {
 		cExistingPass = nil
@@ -130,30 +130,30 @@ func (luksDevice *LuksInfo) changePassword() (int, error) {
 }
 
 // freeCryptDev release the crypt device and frees memory
-func (luksDevice *LuksInfo) freeCryptDev() {
+func (luksDevice *Settings) freeCryptDev() {
 	C.crypt_free(luksDevice.cDevice)
 }
 
 // PassWorks tests if a luks password is correct
 func PassWorks(pass string, luksDevice string) (bool, error) {
-	cryptInfo := &LuksInfo{
+	cryptInfo := &Settings{
 		LuksDevice: luksDevice,
 	}
 
-	cCryptDev, initErr := cryptInfo.cryptInit()
-	if initErr != nil {
-		return false, initErr
+	cCryptDev, err := cryptInfo.cryptInit()
+	if err != nil {
+		return false, err
 	}
 	cryptInfo.cDevice = cCryptDev
 
-	loadErr := cryptInfo.load()
-	if loadErr != nil {
-		return false, loadErr
+	err = cryptInfo.load()
+	if err != nil {
+		return false, err
 	}
 
-	luksSlot, luksSlotErr := cryptInfo.getLuksSlot(pass)
-	if luksSlotErr != nil {
-		return false, luksSlotErr
+	luksSlot, err := cryptInfo.getLuksSlot(pass)
+	if err != nil {
+		return false, err
 	}
 	if luksSlot < 0 {
 		return false, &Error{function: "PassWorks", code: luksSlot}
@@ -168,37 +168,37 @@ func SetRecoveryPassword(
 	newPass string,
 	luksDevice string,
 ) error {
-	cryptInfo := &LuksInfo{
+	cryptInfo := &Settings{
 		OldPass:    oldPass,
 		NewPass:    newPass,
 		LuksDevice: luksDevice,
 	}
 
-	cCryptDev, initErr := cryptInfo.cryptInit()
-	if initErr != nil {
-		return initErr
+	cCryptDev, err := cryptInfo.cryptInit()
+	if err != nil {
+		return err
 	}
 	cryptInfo.cDevice = cCryptDev
 
-	loadErr := cryptInfo.load()
-	if loadErr != nil {
-		return loadErr
+	err = cryptInfo.load()
+	if err != nil {
+		return err
 	}
 
-	luksSlot, luksSlotErr := cryptInfo.getLuksSlot(cryptInfo.OldPass)
-	if luksSlotErr != nil {
-		return luksSlotErr
+	luksSlot, err := cryptInfo.getLuksSlot(cryptInfo.OldPass)
+	if err != nil {
+		return err
 	}
 	cryptInfo.LuksSlot = luksSlot
 
-	_, setErr := cryptInfo.changePassword()
-	if setErr != nil {
-		return setErr
+	_, err = cryptInfo.changePassword()
+	if err != nil {
+		return err
 	}
 
-	_, validLuksSlotErr := cryptInfo.getLuksSlot(cryptInfo.NewPass)
-	if validLuksSlotErr != nil {
-		return luksSlotErr
+	_, err = cryptInfo.getLuksSlot(cryptInfo.NewPass)
+	if err != nil {
+		return err
 	}
 
 	cryptInfo.freeCryptDev()
