@@ -25,7 +25,7 @@ type properties struct {
 	wordSeperator string
 }
 
-// generate creates a unique and sufficently long set of chars to be
+// generate creates a unique and sufficiently long set of chars to be
 // used as a password
 func generate(prop properties) string {
 	list, err := diceware.Generate(prop.numWords)

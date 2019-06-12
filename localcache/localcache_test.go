@@ -64,7 +64,7 @@ func TestSaveToDisk(t *testing.T) {
 
 	actual, err := SaveToDisk(expected.newPass, expected.cacheFile)
 	if err != nil {
-		t.Errorf("error occured writing file: %v", err)
+		t.Errorf("error occurred writing file: %v", err)
 	}
 
 	err = verifyTestFile(actual, expected, t)
