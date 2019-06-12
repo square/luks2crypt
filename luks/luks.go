@@ -36,8 +36,8 @@ func (e *Error) Error() string {
 }
 
 // cryptInit creates the libcryptsetup struct
-func (cryptInfo *LuksInfo) cryptInit() (*C.struct_crypt_device, error) {
-	cDevice := C.CString(cryptInfo.LuksDevice)
+func (luksDevice *LuksInfo) cryptInit() (*C.struct_crypt_device, error) {
+	cDevice := C.CString(luksDevice.LuksDevice)
 	defer C.free(unsafe.Pointer(cDevice))
 
 	var cCD *C.struct_crypt_device

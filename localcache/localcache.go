@@ -37,7 +37,7 @@ func (data CacheData) mkConfDir() error {
 	return nil
 }
 
-// marshalJSONData converts json data into a marshal byte blob for writting
+// marshalJSONData converts json data into a marshal byte blob for writing
 func (data CacheData) marshalJSONData() ([]byte, error) {
 	marshal, err := json.MarshalIndent(data, "", "  ")
 	if err != nil {

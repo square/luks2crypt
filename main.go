@@ -61,7 +61,7 @@ func optVersion(c *cli.Context) error {
 	return nil
 }
 
-// optPostImaging sets up, rotates, and escrows the inital encryption password
+// optPostImaging sets up, rotates, and escrows the initial encryption password
 func optPostImaging(c *cli.Context) error {
 	cryptURL := "https://" + c.String("cryptserver")
 	opts := &postimaging.Opts{

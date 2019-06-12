@@ -78,7 +78,7 @@ func (i machine) isUser(u string) bool {
 	return false
 }
 
-// GetInfo impliments the interface to gather system information such as
+// GetInfo implements the interface to gather system information such as
 // system serial number, hostname, and current user
 func getInfo(g machineGetter) (SystemInfo, error) {
 	var err error
