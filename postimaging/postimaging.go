@@ -7,7 +7,9 @@
 package postimaging
 
 import (
+	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/square/luks2crypt/escrow"
 	"github.com/square/luks2crypt/hwinfo"
@@ -22,17 +24,17 @@ type Opts struct {
 }
 
 // Run post imaging password creation, set, and escrow. Returns an error
-func Run(opts *Opts) error {
-	cryptServerInfo := &escrow.CryptServerInfo{
+func Run(opts Opts) error {
+	cryptServerInfo := escrow.CryptServerInfo{
 		Server: opts.Server,
 		URI:    opts.URI,
 	}
-	cryptServerData := &escrow.CryptServerData{}
+	cryptServerData := escrow.CryptServerData{}
 
 	// gather system data (hostname, username, serialnumber)
-	sysinfo, sysinfoErr := hwinfo.Gather()
-	if sysinfoErr != nil {
-		return sysinfoErr
+	sysinfo, err := hwinfo.Gather()
+	if err != nil {
+		return err
 	}
 	cryptServerData.Serialnum = sysinfo.SerialNum
 	cryptServerData.Hostname = sysinfo.Hostname
@@ -40,51 +42,51 @@ func Run(opts *Opts) error {
 	log.Printf("%+v\n", sysinfo)
 
 	// create a new random password
-	pass, errPass := password.New()
-	if errPass != nil {
-		return errPass
+	pass, err := password.New()
+	if err != nil {
+		return err
 	}
 	cryptServerData.Pass = pass
-	log.Printf("generated new random password\n")
+	log.Println("generated new random password")
 
 	// test if the current password works before performing destructive actions
-	passWorks, passWorksErr := luks.PassWorks(opts.CurPass, opts.LuksDev)
-	if passWorksErr != nil || passWorks == false {
-		return passWorksErr
+	passWorks, err := luks.PassWorks(opts.CurPass, opts.LuksDev)
+	if err != nil || passWorks == false {
+		return err
 	}
 
 	// start destructive operations
 	// cache new password to disk
-	cache, cacheErr := localcache.SaveToDisk(
+	cache, err := localcache.SaveToDisk(
 		cryptServerData.Pass,
 		"/etc/luks2crypt/crypt_recovery_key.json",
 	)
-	if cacheErr != nil {
-		return cacheErr
+	if err != nil {
+		return err
 	}
-	log.Printf("luks password cached locally in: \"%s\"\n", cache)
+	log.Printf("luks password cached locally in: '%s'\n", cache)
 
 	// escrew new password to crypt-server
 	log.Printf(
 		"escrowing system data to: %s\n",
 		opts.Server+opts.URI,
 	)
-	postRes, postErr := cryptServerData.PostCryptServer(*cryptServerInfo)
-	if postErr != nil {
-		return postErr
+	postRes, err := cryptServerData.PostCryptServer(cryptServerInfo)
+	if err != nil {
+		return err
 	}
-	if postRes.StatusCode != 200 {
-		log.Fatalf("error posting to crypt-server: \"%+v\"\n", postRes)
+	if postRes.StatusCode != http.StatusOK {
+		return fmt.Errorf("error posting to crypt-server: '%+v'", postRes)
 	}
-	log.Printf("escrowed data to crypt-server\n")
+	log.Println("escrowed data to crypt-server")
 
 	// change luks admin password to new password
-	setPassErr := luks.SetRecoveryPassword(opts.CurPass, cryptServerData.Pass,
+	err = luks.SetRecoveryPassword(opts.CurPass, cryptServerData.Pass,
 		opts.LuksDev)
-	if setPassErr != nil {
-		return setPassErr
+	if err != nil {
+		return err
 	}
-	log.Printf("changed luks password")
+	log.Println("changed luks passphrase")
 
 	return nil
 }
