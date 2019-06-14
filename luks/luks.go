@@ -129,9 +129,107 @@ func (luksDevice *Settings) changePassword() (int, error) {
 	return changePassRes, nil
 }
 
+// format uses libcryptsetup device format method. This primarly used by tests
+// to create a virtual luks disk for testing
+func (luksDevice *Settings) format() (int, error) {
+	cHash := C.CString("sha256")
+	defer C.free(unsafe.Pointer(cHash))
+
+	luksParams := C.struct_crypt_params_luks1{
+		hash:           cHash,
+		data_alignment: C.size_t(0),
+		data_device:    nil,
+	}
+
+	cLuksType := C.CString(C.CRYPT_LUKS1)
+	defer C.free(unsafe.Pointer(cLuksType))
+
+	cLuksCipher := C.CString("aes")
+	defer C.free(unsafe.Pointer(cLuksCipher))
+
+	cLuksCipherMode := C.CString("xts-plain64")
+	defer C.free(unsafe.Pointer(cLuksCipherMode))
+
+	log.Printf(
+		"formating luks device: '%s'",
+		C.GoString(C.crypt_get_device_name(luksDevice.cDevice)),
+	)
+	cFormatRes := C.crypt_format(
+		luksDevice.cDevice,
+		cLuksType,
+		cLuksCipher,
+		cLuksCipherMode,
+		nil,
+		nil,
+		C.ulong(256/8),
+		unsafe.Pointer(&luksParams),
+	)
+	formatRes := int(cFormatRes)
+	if formatRes < 0 {
+		return -1, &Error{
+			function: "crypt_format",
+			code:     int(formatRes),
+		}
+	}
+
+	log.Println("formated luks device")
+	return 0, nil
+}
+
+// addKeyslotByVolumeKey uses the existing luks device context to add a passphrase
+// to the next available slot. Used to create test volumes
+func (luksDevice *Settings) addKeyslotByVolumeKey() error {
+	cPass := C.CString(luksDevice.NewPass)
+	defer C.free(unsafe.Pointer(cPass))
+
+	err := C.crypt_keyslot_add_by_volume_key(
+		luksDevice.cDevice,
+		C.CRYPT_ANY_SLOT,
+		nil,
+		C.size_t(0),
+		cPass,
+		C.size_t(len(luksDevice.NewPass)),
+	)
+	if err < 0 {
+		return &Error{
+			function: "crypt_keyslot_add_by_volume_key",
+			code:     int(err),
+		}
+	}
+
+	return nil
+}
+
 // freeCryptDev release the crypt device and frees memory
 func (luksDevice *Settings) freeCryptDev() {
 	C.crypt_free(luksDevice.cDevice)
+}
+
+// formatSetPassword formats a device with luks and adds a passphrase to device
+// This is used by tests to create a virtual disk
+func formatSetPassword(pass string, luksDevice string) (bool, error) {
+	cryptInfo := &Settings{
+		NewPass:    pass,
+		LuksDevice: luksDevice,
+	}
+
+	cCryptDev, err := cryptInfo.cryptInit()
+	if err != nil {
+		return false, err
+	}
+	cryptInfo.cDevice = cCryptDev
+
+	cryptInfo.format()
+	cryptInfo.addKeyslotByVolumeKey()
+
+	_, err = cryptInfo.getLuksSlot(cryptInfo.NewPass)
+	if err != nil {
+		return false, err
+	}
+
+	cryptInfo.freeCryptDev()
+
+	return true, nil
 }
 
 // PassWorks tests if a luks password is correct

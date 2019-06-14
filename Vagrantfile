@@ -40,7 +40,6 @@ popd
 SCRIPT
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/bionic64"
   config.vm.provider "virtualbox" do |v|
     v.customize ["setextradata", :id, "VBoxInternal/Devices/pcbios/0/Config/DmiSystemSerial", "string:1234foobar"]
   end
@@ -56,4 +55,12 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "shell", privileged: true,
     inline: $cryptservermock_install
+
+  config.vm.define "bionic", primary: true do |bionic|
+    bionic.vm.box = "ubuntu/bionic64"
+  end
+
+  config.vm.define "xenial", autostart: false do |xenial|
+    xenial.vm.box = "ubuntu/xenial64"
+  end
 end
