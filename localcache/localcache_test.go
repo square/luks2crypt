@@ -18,15 +18,16 @@ type expectedData struct {
 	newPass, cacheFile string
 }
 
-// cleanupTestFile removes any test files created by the tests
-func (f expectedData) cleanupTestFile(t *testing.T) error {
-	f.cacheFile = path.Clean(f.cacheFile)
-	err := os.Remove(f.cacheFile)
+// createTempFile allocates a temporary file in the system $TMPDIR
+func createTempFile(t *testing.T, dir string, file string) *os.File {
+	tmpfile, err := ioutil.TempFile(dir, file)
 	if err != nil {
-		t.Errorf("error removing test file '%v' with %v", f.cacheFile, err)
+		t.Fatalf("error creating temp file %v", err)
 	}
 
-	return nil
+	t.Logf("created tmp file '%v'", tmpfile.Name())
+
+	return tmpfile
 }
 
 // verifyTestFile validates the expected vs actual results written to the test
@@ -55,12 +56,13 @@ func verifyTestFile(file string, expected expectedData, t *testing.T) error {
 }
 
 func TestSaveToDisk(t *testing.T) {
+	file := createTempFile(t, "", "go-TestSaveToDisk-*.yaml")
+	defer os.Remove(file.Name())
+
 	expected := expectedData{
 		newPass:   "1234.foo.bar.test",
-		cacheFile: "../tmp/localcache-testsavetodisk.yaml",
+		cacheFile: file.Name(),
 	}
-
-	defer expected.cleanupTestFile(t)
 
 	actual, err := SaveToDisk(expected.newPass, expected.cacheFile)
 	if err != nil {
