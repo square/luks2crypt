@@ -129,7 +129,7 @@ func (luksDevice *Settings) changePassword() (int, error) {
 	return changePassRes, nil
 }
 
-// format uses libcryptsetup device format method. This primarly used by tests
+// format uses libcryptsetup device format method. This primarily used by tests
 // to create a virtual luks disk for testing
 func (luksDevice *Settings) format() (int, error) {
 	cHash := C.CString("sha256")
