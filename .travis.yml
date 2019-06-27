@@ -27,7 +27,7 @@ jobs:
   include:
   - stage: build
     go: 1.12.x
-    script: go build -v -ldflags "-X main.VERSION=${TRAVIS_TAG}"
+    script: go build -v -ldflags "-X main.VERSION=${TRAVIS_TAG}" ./cmd/...
     deploy:
       provider: releases
       file: luks2crypt-${TRAVIS_TAG}-${GIMME_OS}-${GIMME_ARCH}.tar.gz
