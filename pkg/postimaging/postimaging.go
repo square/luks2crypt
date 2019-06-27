@@ -11,11 +11,11 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/square/luks2crypt/escrow"
-	"github.com/square/luks2crypt/hwinfo"
-	"github.com/square/luks2crypt/localcache"
-	"github.com/square/luks2crypt/luks"
-	"github.com/square/luks2crypt/password"
+	"github.com/square/luks2crypt/internal/escrow"
+	"github.com/square/luks2crypt/internal/hwinfo"
+	"github.com/square/luks2crypt/internal/localcache"
+	"github.com/square/luks2crypt/internal/luks"
+	"github.com/square/luks2crypt/internal/password"
 )
 
 // Opts is used to store the options needed for postimaging functions

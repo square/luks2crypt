@@ -58,12 +58,12 @@ through cgo to manage the encrypted devices. On debian/ubuntu you can run:
 
 - Standard go tools can be used to build luks2crypt:
 
-      go build
+      go build ./cmd/...
 
 - If you would like to use a mock crypt server to test client changes on is
   included in this project:
 
-      go build tools/cryptservermock/cryptservermock.go
+      go build ./tools/...
 
 - If you need a test enviornment, the provided `Vagrantfile` creates an ubuntu
   vm. The vagrantfile has a provision script that creates a luks disk image at

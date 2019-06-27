@@ -11,7 +11,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/square/luks2crypt/postimaging"
+	"github.com/square/luks2crypt/pkg/postimaging"
 
 	cli "gopkg.in/urfave/cli.v1"
 )

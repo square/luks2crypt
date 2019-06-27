@@ -5,7 +5,7 @@ ARG LUKS2CRYPT_VER='7213ec6894a6f368375a290de81c17f56190c20e'
 
 # golang variables
 ARG GO111MODULE='on'
-ARG GOLANGVER='1.11.5'
+ARG GOLANGVER='1.12.6'
 ARG GOPATH='/go'
 ENV PATH=${PATH}:/usr/local/go/bin:/go/bin
 
@@ -48,7 +48,7 @@ WORKDIR /go/src/github.com/square/luks2crypt
 COPY . .
 
 # go build and install luks2crypt
-RUN go install -ldflags "-X main.VERSION=${LUKS2CRYPT_VER}" -v ./...
+RUN go install -ldflags "-X main.VERSION=${LUKS2CRYPT_VER}" -v ./cmd/...
 
 # run and print the version of luks2crypt
 ENTRYPOINT [ "luks2crypt" ]
