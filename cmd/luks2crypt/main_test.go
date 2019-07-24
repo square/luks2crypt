@@ -7,17 +7,32 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"testing"
 )
 
+var testCases = []struct {
+	arg  string
+	want error
+}{
+	{
+		arg:  "-version",
+		want: nil,
+	},
+}
+
 func TestMain(t *testing.T) {
-	args := os.Args[0:1]
-	args = append(args, "-version")
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("flag %s should produce error of %s", tc.arg, tc.want), func(t *testing.T) {
+			args := os.Args[0:1]
+			args = append(args, tc.arg)
 
-	err := run(args)
+			err := run(args)
 
-	if err != nil {
-		t.Errorf("error when calling run: %v", err)
+			if err != tc.want {
+				t.Errorf("error when calling run: %v", err)
+			}
+		})
 	}
 }
