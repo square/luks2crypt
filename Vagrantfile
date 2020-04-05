@@ -3,7 +3,7 @@
 
 $golang_install = <<-SCRIPT
 set -ux
-GOLANGVER=1.12
+GOLANGVER=1.14.1
 GOLANGTAR=https://dl.google.com/go/go${GOLANGVER}.linux-amd64.tar.gz
 
 pushd /tmp

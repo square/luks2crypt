@@ -5,7 +5,7 @@ ARG LUKS2CRYPT_VER='7213ec6894a6f368375a290de81c17f56190c20e'
 
 # golang variables
 ARG GO111MODULE='on'
-ARG GOLANGVER='1.12.6'
+ARG GOLANGVER='1.14.1'
 ARG GOPATH='/go'
 ENV PATH=${PATH}:/usr/local/go/bin:/go/bin
 
