@@ -19,16 +19,16 @@ addons:
 
 script:
   - diff -u <(echo -n) <(gofmt -d .)
-  - go test -v -ldflags "-X main.VERSION=${TRAVIS_TAG}" ./...
+  - make test
 
 jobs:
   include:
   - stage: build
     go: 1.14.x
-    script: go build -v -ldflags "-X main.VERSION=${TRAVIS_TAG}" ./cmd/...
+    script: make build
     before_deploy:
       - mkdir -p tmp/luks2crypt
-      - cp luks2crypt README.md COPYING LICENSE.txt tmp/luks2crypt/
+      - cp bin/luks2crypt README.md COPYING LICENSE.txt tmp/luks2crypt/
       - tar -C tmp -czvf luks2crypt-${TRAVIS_TAG}-${GIMME_OS}-${GIMME_ARCH}.tar.gz luks2crypt
     deploy:
       provider: releases
