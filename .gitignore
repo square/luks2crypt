@@ -2,7 +2,7 @@
 .vagrant
 /luks2crypt
 /cryptservermock
-vendor
 tmp
 *.tar.gz
 *-cloudimg-console.log
+bin/
