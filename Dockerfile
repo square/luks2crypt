@@ -48,7 +48,7 @@ WORKDIR /go/src/github.com/square/luks2crypt
 COPY . .
 
 # go build and install luks2crypt
-RUN go install -ldflags "-X main.VERSION=${LUKS2CRYPT_VER}" -v ./cmd/...
+RUN make install
 
 # run and print the version of luks2crypt
 ENTRYPOINT [ "luks2crypt" ]

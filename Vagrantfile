@@ -34,8 +34,8 @@ SCRIPT
 
 $cryptservermock_install = <<-SCRIPT
 pushd /vagrant
-go build -v tools/cryptservermock/cryptservermock.go
-cp cryptservermock /usr/local/bin/
+make build-mockserver
+cp bin/cryptservermock /usr/local/bin/
 popd
 SCRIPT
 
@@ -45,7 +45,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision "shell",
-    inline: "apt install -y cryptsetup ssl-cert"
+    inline: "apt install -y cryptsetup ssl-cert make"
 
   config.vm.provision "shell", privileged: true,
     inline: $golang_install
