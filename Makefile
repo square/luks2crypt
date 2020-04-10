@@ -23,6 +23,16 @@ install:
 build:
 	$(GOBUILD) $(LDFLAGS) -o $(BINPATH)/$(BINARY_NAME) -v ./cmd/$(BINARY_NAME)
 
+deploytar:
+	mkdir -p tmp/$(BINARY_NAME)
+	cp bin/$(BINARY_NAME) README.md COPYING LICENSE.txt tmp/$(BINARY_NAME)/
+	tar -C tmp -czvf $(BINARY_NAME)-${TRAVIS_TAG}-${GIMME_OS}-${GIMME_ARCH}.tar.gz $(BINARY_NAME)
+
+lint:
+	GO111MODULE=off go get -u golang.org/x/lint/golint
+	golint -set_exit_status ./...
+	go vet ./...
+
 test:
 	$(GOTEST) -v ./...
 

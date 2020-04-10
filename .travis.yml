@@ -18,7 +18,7 @@ addons:
     - libcryptsetup-dev
 
 script:
-  - diff -u <(echo -n) <(gofmt -d .)
+  - make lint
   - make test
 
 jobs:
@@ -27,9 +27,7 @@ jobs:
     go: 1.14.x
     script: make build
     before_deploy:
-      - mkdir -p tmp/luks2crypt
-      - cp bin/luks2crypt README.md COPYING LICENSE.txt tmp/luks2crypt/
-      - tar -C tmp -czvf luks2crypt-${TRAVIS_TAG}-${GIMME_OS}-${GIMME_ARCH}.tar.gz luks2crypt
+      - make deploytar
     deploy:
       provider: releases
       edge: true
