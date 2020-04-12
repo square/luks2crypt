@@ -6,3 +6,4 @@ tmp
 *.tar.gz
 *-cloudimg-console.log
 bin/
+artifacts/

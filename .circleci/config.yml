@@ -1,0 +1,60 @@
+version: 2.1
+executors:
+  golang:
+    docker:
+      - image: circleci/golang:1.14-buster
+
+commands:
+  setup-image:
+    steps:
+      - checkout
+      - run: sudo apt update && sudo apt install -y libcryptsetup-dev
+
+jobs:
+  lint:
+    executor: golang
+    steps:
+      - setup-image
+      - run: make lint
+  test:
+    executor: golang
+    steps:
+      - setup-image
+      - run: make test
+  build:
+    executor: golang
+    steps:
+      - setup-image
+      - run: make build
+      - run: make deploytar
+      - persist_to_workspace:
+          root: .
+          paths:
+            - artifacts
+      - store_artifacts:
+          path: artifacts
+  publish-github-release:
+    executor: golang
+    steps:
+      - attach_workspace:
+          at: ./artifacts
+      - run: make deploy
+
+workflows:
+  version: 2
+  build-test-workflow:
+    jobs:
+      - lint
+      - test
+      - build:
+          requires:
+            - lint
+            - test
+      - publish-github-release:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
