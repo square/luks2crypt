@@ -1,3 +1,10 @@
+only-deploy-tags: &only-deploy-tags
+  filters:
+    branches:
+      ignore: /.*/
+    tags:
+      only: /^v\d+\.\d+\.\d+$/
+
 version: 2.1
 executors:
   golang:
@@ -50,11 +57,15 @@ workflows:
           requires:
             - lint
             - test
+  deploy-workflow:
+    jobs:
+      - test:
+          <<: *only-deploy-tags
+      - build:
+          <<: *only-deploy-tags
+          requires:
+            - test
       - publish-github-release:
+          <<: *only-deploy-tags
           requires:
             - build
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v\d+\.\d+\.\d+$/
