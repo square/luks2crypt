@@ -43,6 +43,7 @@ jobs:
   publish-github-release:
     executor: golang
     steps:
+      - checkout
       - attach_workspace:
           at: ./artifacts
       - run: make deploy
