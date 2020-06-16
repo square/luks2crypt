@@ -49,6 +49,8 @@ func run(args []string) error {
 				cli.StringFlag{Name: "cryptendpoint, e",
 					Usage: "The Crypt Server endpoint to use when escrowing keys",
 					Value: "/checkin/"},
+				cli.StringFlag{Name: "user, u",
+					Usage: "Basic auth for Crypt server username:password. Omit the :password to be prompted on the commandline."},
 			},
 		},
 	}
@@ -70,6 +72,7 @@ func optPostImaging(c *cli.Context) error {
 		CurPass: c.String("currentpassword"),
 		Server:  cryptURL,
 		URI:     c.String("cryptendpoint"),
+		User:    c.String("user"),
 	}
 	err := postimaging.Run(opts)
 	if err != nil {
