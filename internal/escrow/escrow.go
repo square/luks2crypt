@@ -16,7 +16,7 @@ import (
 
 // CryptServerInfo is used to create an object with info about the escrow server
 type CryptServerInfo struct {
-	Server, URI, User string
+	Server, URI, Username, Password string
 }
 
 // CryptServerData stores the data to be escrowed
@@ -43,22 +43,14 @@ func (data CryptServerData) PostCryptServer(escrowServer CryptServerInfo) (*http
 	}
 
 	client := new(http.Client)
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req, err := http.NewRequest("POST", cryptServer, strings.NewReader(form.Encode()))
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
-	if escrowServer.User != "" {
-		auth := strings.Split(escrowServer.User, ":")
-		if len(auth) == 2 {
-			username, password := auth[0], auth[1]
-		} else {
-			username := auth[0]
-			// TODO
-			password = ""
-		}
-		req.SetBasicAuth(username, password)
+	if (escrowServer.Username != "") && (escrowServer.Password != "") {
+		req.SetBasicAuth(escrowServer.Username, escrowServer.Password)
 	}
 
 	res, err := client.Do(req)
