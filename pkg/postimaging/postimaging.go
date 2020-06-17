@@ -20,7 +20,7 @@ import (
 
 // Opts is used to store the options needed for postimaging functions
 type Opts struct {
-	LuksDev, CurPass, Server, URI, User, Pass string
+	LuksDev, CurPass, Server, URI, AuthUser, AuthPass string
 }
 
 // Run post imaging password creation, set, and escrow. Returns an error
