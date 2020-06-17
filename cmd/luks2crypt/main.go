@@ -85,7 +85,7 @@ func optPostImaging(c *cli.Context) error {
 			err = fmt.Errorf("error getting basic auth password: %v", err)
 			return cli.NewExitError(err, 1)
 		}
-		opts.AuthPass = password
+		opts.AuthPass = string(password)
 	}
 	err := postimaging.Run(opts)
 	if err != nil {
