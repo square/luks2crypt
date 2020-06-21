@@ -13,6 +13,7 @@ import (
 
 	"github.com/square/luks2crypt/pkg/postimaging"
 
+	"golang.org/x/crypto/ssh/terminal"
 	cli "gopkg.in/urfave/cli.v1"
 )
 
@@ -49,6 +50,10 @@ func run(args []string) error {
 				cli.StringFlag{Name: "cryptendpoint, e",
 					Usage: "The Crypt Server endpoint to use when escrowing keys",
 					Value: "/checkin/"},
+				cli.StringFlag{Name: "authuser, u",
+					Usage: "Basic auth username for Crypt server."},
+				cli.StringFlag{Name: "authpass, P",
+					Usage: "Basic auth password for Crypt server. If omitted and authuser/u is specified, the password will be prompted for on the terminal."},
 			},
 		},
 	}
@@ -66,10 +71,21 @@ func optVersion(c *cli.Context) error {
 func optPostImaging(c *cli.Context) error {
 	cryptURL := "https://" + c.String("cryptserver")
 	opts := postimaging.Opts{
-		LuksDev: c.String("luksdevice"),
-		CurPass: c.String("currentpassword"),
-		Server:  cryptURL,
-		URI:     c.String("cryptendpoint"),
+		LuksDev:  c.String("luksdevice"),
+		CurPass:  c.String("currentpassword"),
+		Server:   cryptURL,
+		URI:      c.String("cryptendpoint"),
+		AuthUser: c.String("authuser"),
+		AuthPass: c.String("authpass"),
+	}
+	if (opts.AuthUser != "") && (opts.AuthPass == "") {
+		fmt.Printf("Password: ")
+		password, err := terminal.ReadPassword(0)
+		if err != nil {
+			err = fmt.Errorf("error getting basic auth password: %v", err)
+			return cli.NewExitError(err, 1)
+		}
+		opts.AuthPass = string(password)
 	}
 	err := postimaging.Run(opts)
 	if err != nil {

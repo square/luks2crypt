@@ -20,14 +20,16 @@ import (
 
 // Opts is used to store the options needed for postimaging functions
 type Opts struct {
-	LuksDev, CurPass, Server, URI string
+	LuksDev, CurPass, Server, URI, AuthUser, AuthPass string
 }
 
 // Run post imaging password creation, set, and escrow. Returns an error
 func Run(opts Opts) error {
 	cryptServerInfo := escrow.CryptServerInfo{
-		Server: opts.Server,
-		URI:    opts.URI,
+		Server:   opts.Server,
+		URI:      opts.URI,
+		Username: opts.AuthUser,
+		Password: opts.AuthPass,
 	}
 	cryptServerData := escrow.CryptServerData{}
 

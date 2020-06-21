@@ -40,6 +40,17 @@ Setting the admin password and escrowing it post imaging:
       --currentpassword "<password_to_replace>" \
       --cryptserver "<cryptserver.example.com>"
 
+If your Crypt server uses basic authentication to protect the checkin endpoint:
+
+    sudo luks2crypt postimaging \
+      --luksdevice "<device_to_manage>" \
+      --currentpassword "<password_to_replace>" \
+      --cryptserver "<cryptserver.example.com>" \
+      --authuser "<basic auth username>" \
+      --authpass "<basic auth password>"
+
+If you omit the password, luk2crypt will prompt for one.
+
 Development
 -----------
 

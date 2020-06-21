@@ -9,13 +9,14 @@ package escrow
 import (
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/gorilla/schema"
 )
 
 // CryptServerInfo is used to create an object with info about the escrow server
 type CryptServerInfo struct {
-	Server, URI string
+	Server, URI, Username, Password string
 }
 
 // CryptServerData stores the data to be escrowed
@@ -42,7 +43,17 @@ func (data CryptServerData) PostCryptServer(escrowServer CryptServerInfo) (*http
 	}
 
 	client := new(http.Client)
-	res, err := client.PostForm(cryptServer, form)
+	req, err := http.NewRequest("POST", cryptServer, strings.NewReader(form.Encode()))
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+
+	if (escrowServer.Username != "") && (escrowServer.Password != "") {
+		req.SetBasicAuth(escrowServer.Username, escrowServer.Password)
+	}
+
+	res, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
