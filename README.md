@@ -7,7 +7,7 @@ Luks2Crypt
 
 Luks2crypt is used to manage luks client devices and allow escrowing to a
 [crypt-server](https://github.com/grahamgilbert/Crypt-Server). Currently, it
-impliments some functionality similar to [Crypt2](https://github.com/grahamgilbert/crypt2).
+implements some functionality similar to [Crypt2](https://github.com/grahamgilbert/crypt2).
 
 `postimaging`:
 
