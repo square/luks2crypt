@@ -20,6 +20,7 @@ import (
 
 // Opts is used to store the options needed for postimaging functions
 type Opts struct {
+	LuksVersion                                       int
 	LuksDev, CurPass, Server, URI, AuthUser, AuthPass string
 }
 
@@ -84,7 +85,7 @@ func Run(opts Opts) error {
 
 	// change luks admin password to new password
 	err = luks.SetRecoveryPassword(opts.CurPass, cryptServerData.Pass,
-		opts.LuksDev)
+		opts.LuksDev, opts.LuksVersion)
 	if err != nil {
 		return err
 	}

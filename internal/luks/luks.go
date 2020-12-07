@@ -22,6 +22,7 @@ type Settings struct {
 	OldPass, NewPass, LuksDevice string
 	LuksSlot                     int
 	cDevice                      *C.struct_crypt_device
+	LuksVersion                  int
 }
 
 // Error holds error messages from this package
@@ -52,7 +53,11 @@ func (luksDevice *Settings) cryptInit() (*C.struct_crypt_device, error) {
 
 // load populates the libcryptsetup struct with device info from disk
 func (luksDevice *Settings) load() error {
-	cCryptType := C.CString(C.CRYPT_LUKS1)
+	cCryptType := C.CString(C.CRYPT_LUKS2)
+	if luksDevice.LuksVersion == 1 {
+		cCryptType = C.CString(C.CRYPT_LUKS1)
+	}
+
 	defer C.free(unsafe.Pointer(cCryptType))
 
 	err := C.crypt_load(luksDevice.cDevice, cCryptType, nil)
@@ -141,7 +146,11 @@ func (luksDevice *Settings) format() (int, error) {
 		data_device:    nil,
 	}
 
-	cLuksType := C.CString(C.CRYPT_LUKS1)
+	cLuksType := C.CString(C.CRYPT_LUKS2)
+	if luksDevice.LuksVersion == 1 {
+		cLuksType = C.CString(C.CRYPT_LUKS1)
+	}
+
 	defer C.free(unsafe.Pointer(cLuksType))
 
 	cLuksCipher := C.CString("aes")
@@ -261,15 +270,12 @@ func PassWorks(pass string, luksDevice string) (bool, error) {
 }
 
 // SetRecoveryPassword changes the luks passphrase on the device
-func SetRecoveryPassword(
-	oldPass string,
-	newPass string,
-	luksDevice string,
-) error {
+func SetRecoveryPassword(oldPass string, newPass string, luksDevice string, luksVersion int) error {
 	cryptInfo := &Settings{
-		OldPass:    oldPass,
-		NewPass:    newPass,
-		LuksDevice: luksDevice,
+		OldPass:     oldPass,
+		NewPass:     newPass,
+		LuksDevice:  luksDevice,
+		LuksVersion: luksVersion,
 	}
 
 	cCryptDev, err := cryptInfo.cryptInit()
