@@ -94,7 +94,7 @@ func TestSetRecoveryPassword(t *testing.T) {
 	}
 	expected.create(t)
 
-	err := SetRecoveryPassword(expected.pass, expected.newPass, expected.path)
+	err := SetRecoveryPassword(expected.pass, expected.newPass, expected.path, 1)
 	if err != nil {
 		t.Errorf("error changing password from '%v' to '%v' on '%v'. Got %v",
 			expected.pass,
