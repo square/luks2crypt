@@ -37,8 +37,9 @@ func createTempDir(t *testing.T, dir string, prefix string) string {
 // create allocates and formats a disk to run tests against
 func (d testDisk) create(t *testing.T) {
 	luksDev := &Settings{
-		NewPass:    d.pass,
-		LuksDevice: d.path,
+		NewPass:     d.pass,
+		LuksDevice:  d.path,
+		LuksVersion: d.luksVersion,
 	}
 
 	disk, err := diskfs.Create(d.path, d.size, diskfs.Raw)
@@ -56,7 +57,7 @@ func (d testDisk) create(t *testing.T) {
 		t.Errorf("error partitioning test filesystem %v", err)
 	}
 
-	_, err = formatSetPassword(luksDev.NewPass, luksDev.LuksDevice)
+	_, err = formatSetPassword(luksDev.NewPass, luksDev.LuksDevice, luksDev.LuksVersion)
 	if err != nil {
 		t.Errorf("error creating test luks device: %v", err)
 	}
@@ -74,7 +75,7 @@ func TestPassWorks(t *testing.T) {
 	}
 	expected.create(t)
 
-	_, err := PassWorks(expected.pass, expected.path)
+	_, err := PassWorks(expected.pass, expected.path, expected.luksVersion)
 	if err != nil {
 		t.Errorf("error checking if '%v' is the password for '%v'. Got %v",
 			expected.pass,
@@ -97,7 +98,7 @@ func TestSetRecoveryPassword(t *testing.T) {
 	}
 	expected.create(t)
 
-	err := SetRecoveryPassword(expected.pass, expected.newPass, expected.path, 1)
+	err := SetRecoveryPassword(expected.pass, expected.newPass, expected.path, expected.luksVersion)
 	if err != nil {
 		t.Errorf("error changing password from '%v' to '%v' on '%v'. Got %v",
 			expected.pass,

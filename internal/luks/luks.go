@@ -216,10 +216,11 @@ func (luksDevice *Settings) freeCryptDev() {
 
 // formatSetPassword formats a device with luks and adds a passphrase to device
 // This is used by tests to create a virtual disk
-func formatSetPassword(pass string, luksDevice string) (bool, error) {
+func formatSetPassword(pass string, luksDevice string, luksVersion int) (bool, error) {
 	cryptInfo := &Settings{
-		NewPass:    pass,
-		LuksDevice: luksDevice,
+		NewPass:     pass,
+		LuksDevice:  luksDevice,
+		LuksVersion: luksVersion,
 	}
 
 	cCryptDev, err := cryptInfo.cryptInit()
@@ -242,9 +243,10 @@ func formatSetPassword(pass string, luksDevice string) (bool, error) {
 }
 
 // PassWorks tests if a luks password is correct
-func PassWorks(pass string, luksDevice string) (bool, error) {
+func PassWorks(pass string, luksDevice string, luksVersion int) (bool, error) {
 	cryptInfo := &Settings{
-		LuksDevice: luksDevice,
+		LuksDevice:  luksDevice,
+		LuksVersion: luksVersion,
 	}
 
 	cCryptDev, err := cryptInfo.cryptInit()
