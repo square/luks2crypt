@@ -53,7 +53,7 @@ func Run(opts Opts) error {
 	log.Println("generated new random password")
 
 	// test if the current password works before performing destructive actions
-	passWorks, err := luks.PassWorks(opts.CurPass, opts.LuksDev)
+	passWorks, err := luks.PassWorks(opts.CurPass, opts.LuksDev, opts.LuksVersion)
 	if err != nil || passWorks == false {
 		return err
 	}
