@@ -3,7 +3,7 @@ Luks2Crypt
 
 - https://golang.org/cmd/cgo/
 
-- https://gitlab.com/cryptsetup/cryptsetup/blob/v1_6_6/lib/libcryptsetup.h
+- https://gitlab.com/cryptsetup/cryptsetup/-/blob/v2.2.2/lib/libcryptsetup.h
 
 Luks2crypt is used to manage luks client devices and allow escrowing to a
 [crypt-server](https://github.com/grahamgilbert/Crypt-Server). Currently, it
@@ -97,7 +97,7 @@ through cgo to manage the encrypted devices. On debian/ubuntu you can run:
       sudo /vagrant/bin/luks2crypt postimaging \
         -l ./luks-dev-disk.img \
         -p devpassword \
-        -s ubuntu-bionic:8443
+        -s ubuntu-focal:8443
 
   You should then see the form post data printed to stdout from
   `cryptservermock`.

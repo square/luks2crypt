@@ -3,7 +3,7 @@
 
 $golang_install = <<-SCRIPT
 set -ux
-GOLANGVER=1.14.1
+GOLANGVER=1.16
 GOLANGTAR=https://dl.google.com/go/go${GOLANGVER}.linux-amd64.tar.gz
 
 pushd /tmp
@@ -22,7 +22,7 @@ sudo cryptsetup close luks-dev-disk
 rm -f luks-dev-disk.img
 fallocate -l 1G luks-dev-disk.img
 parted luks-dev-disk.img mklabel msdos --script
-echo "devpassword" | cryptsetup --batch-mode luksFormat luks-dev-disk.img
+echo "devpassword" | sudo cryptsetup --batch-mode luksFormat --type luks2 luks-dev-disk.img
 echo "devpassword" | sudo cryptsetup open luks-dev-disk.img luks-dev-disk
 sudo mkfs.ext4 /dev/mapper/luks-dev-disk
 sudo mount /dev/mapper/luks-dev-disk /mnt
@@ -56,8 +56,12 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", privileged: true,
     inline: $cryptservermock_install
 
-  config.vm.define "bionic", primary: true do |bionic|
+  config.vm.define "bionic", autostart: false do |bionic|
     bionic.vm.box = "ubuntu/bionic64"
+  end
+
+  config.vm.define "focal", primary: true do |focal|
+    focal.vm.box = "ubuntu/focal64"
   end
 
   config.vm.define "xenial", autostart: false do |xenial|
