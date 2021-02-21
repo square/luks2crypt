@@ -45,6 +45,9 @@ func run(args []string) error {
 					Usage: "Luks Device to rotate password on. Ex. /dev/sda3"},
 				cli.StringFlag{Name: "currentpassword, p",
 					Usage: "Password to unlock and update device"},
+				cli.IntFlag{Name: "luksVersion, v",
+					Usage: "Luks version",
+					Value: 2},
 				cli.StringFlag{Name: "cryptserver, s",
 					Usage: "Crypt Server to escrow recovery key to. Ex. cryptserver.example.com"},
 				cli.StringFlag{Name: "cryptendpoint, e",
@@ -71,13 +74,19 @@ func optVersion(c *cli.Context) error {
 func optPostImaging(c *cli.Context) error {
 	cryptURL := "https://" + c.String("cryptserver")
 	opts := postimaging.Opts{
-		LuksDev:  c.String("luksdevice"),
-		CurPass:  c.String("currentpassword"),
-		Server:   cryptURL,
-		URI:      c.String("cryptendpoint"),
-		AuthUser: c.String("authuser"),
-		AuthPass: c.String("authpass"),
+		LuksDev:     c.String("luksdevice"),
+		CurPass:     c.String("currentpassword"),
+		Server:      cryptURL,
+		URI:         c.String("cryptendpoint"),
+		AuthUser:    c.String("authuser"),
+		AuthPass:    c.String("authpass"),
+		LuksVersion: c.Int("luksVersion"),
 	}
+
+	if opts.LuksVersion != 1 {
+		opts.LuksVersion = 2
+	}
+
 	if (opts.AuthUser != "") && (opts.AuthPass == "") {
 		fmt.Printf("Password: ")
 		password, err := terminal.ReadPassword(0)

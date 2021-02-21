@@ -20,6 +20,7 @@ import (
 
 // Opts is used to store the options needed for postimaging functions
 type Opts struct {
+	LuksVersion                                       int
 	LuksDev, CurPass, Server, URI, AuthUser, AuthPass string
 }
 
@@ -52,7 +53,7 @@ func Run(opts Opts) error {
 	log.Println("generated new random password")
 
 	// test if the current password works before performing destructive actions
-	passWorks, err := luks.PassWorks(opts.CurPass, opts.LuksDev)
+	passWorks, err := luks.PassWorks(opts.CurPass, opts.LuksDev, opts.LuksVersion)
 	if err != nil || passWorks == false {
 		return err
 	}
@@ -84,7 +85,7 @@ func Run(opts Opts) error {
 
 	// change luks admin password to new password
 	err = luks.SetRecoveryPassword(opts.CurPass, cryptServerData.Pass,
-		opts.LuksDev)
+		opts.LuksDev, opts.LuksVersion)
 	if err != nil {
 		return err
 	}
