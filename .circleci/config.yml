@@ -9,7 +9,7 @@ version: 2.1
 executors:
   golang:
     docker:
-      - image: circleci/golang:1.14-buster
+      - image: cimg/go:1.16
 
 commands:
   setup-image:
