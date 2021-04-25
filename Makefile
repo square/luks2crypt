@@ -1,10 +1,5 @@
 VERSION := $(shell git describe --tags)
 
-OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
-ARCH := $(shell dpkg --print-architecture)
-
-GITTAG := $(shell git describe --tags)
-
 BINPATH := ./bin
 
 GOCMD := go
@@ -28,14 +23,9 @@ install:
 build:
 	$(GOBUILD) $(LDFLAGS) -o $(BINPATH)/$(BINARY_NAME) -v ./cmd/$(BINARY_NAME)
 
-deploytar:
-	mkdir -p tmp/$(BINARY_NAME) artifacts
-	cp bin/$(BINARY_NAME) README.md COPYING LICENSE.txt tmp/$(BINARY_NAME)/
-	tar -C tmp -czvf artifacts/$(BINARY_NAME)-$(GITTAG)-$(OS)-$(ARCH).tar.gz $(BINARY_NAME)
-
 deploy:
-	GO111MODULE=off go get github.com/tcnksm/ghr
-	ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_TAG} ./artifacts/
+	go get github.com/goreleaser/goreleaser@latest
+	goreleaser release
 
 lint:
 	GO111MODULE=off go get -u golang.org/x/lint/golint
@@ -47,7 +37,7 @@ test:
 
 clean:
 	$(GOCLEAN)
-	rm -r ./bin ./tmp ./artifacts
+	rm -r ./bin ./tmp ./artifacts ./dist
 
 deps:
 	$(GOMOD) tidy

@@ -7,3 +7,4 @@ tmp
 *-cloudimg-console.log
 bin/
 artifacts/
+dist/
