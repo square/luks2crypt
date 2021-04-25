@@ -3,7 +3,7 @@ only-deploy-tags: &only-deploy-tags
     branches:
       ignore: /.*/
     tags:
-      only: /^v\d+\.\d+\.\d+$/
+      only: /v[0-9]+(\.[0-9]+)*(-.*)*/
 
 version: 2.1
 executors:
@@ -33,19 +33,10 @@ jobs:
     steps:
       - setup-image
       - run: make build
-      - run: make deploytar
-      - persist_to_workspace:
-          root: .
-          paths:
-            - artifacts
-      - store_artifacts:
-          path: artifacts
   publish-github-release:
     executor: golang
     steps:
       - checkout
-      - attach_workspace:
-          at: .
       - run: make deploy
 
 workflows:

@@ -18,9 +18,9 @@ import (
 )
 
 var (
-	// VERSION set during build
-	// go build -ldflags "-X main.VERSION=1.2.3"
-	VERSION = "0.0.1"
+	// version set during build
+	// go build -ldflags "-X main.version=1.2.3"
+	version = "0.0.1"
 )
 
 // run setups up cli arg handling and executes luks2crypt
@@ -28,7 +28,7 @@ func run(args []string) error {
 	app := cli.NewApp()
 	app.Name = "luks2crypt"
 	app.Usage = "Generates a random luks password, escrows it, and rotates slot 0 on root."
-	app.Version = VERSION
+	app.Version = version
 
 	app.Commands = []cli.Command{
 		{
@@ -66,7 +66,7 @@ func run(args []string) error {
 
 // optVersion returns the application version. Typically, this is the git sha
 func optVersion(c *cli.Context) error {
-	fmt.Println(VERSION)
+	fmt.Println(version)
 	return nil
 }
 
