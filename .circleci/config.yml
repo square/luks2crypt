@@ -36,7 +36,7 @@ jobs:
   publish-github-release:
     executor: golang
     steps:
-      - checkout
+      - setup-image
       - run: make deploy
 
 workflows:
