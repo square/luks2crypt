@@ -24,7 +24,7 @@ build:
 	$(GOBUILD) $(LDFLAGS) -o $(BINPATH)/$(BINARY_NAME) -v ./cmd/$(BINARY_NAME)
 
 deploy:
-	GO111MODULE=off go get github.com/goreleaser/goreleaser@latest
+	GO111MODULE=off go get github.com/goreleaser/goreleaser
 	goreleaser release --rm-dist
 
 lint:
