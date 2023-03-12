@@ -1,12 +1,12 @@
-FROM ubuntu:focal
+FROM ubuntu:22.04
 
 # luks2crypt variables
 ARG LUKS2CRYPT_VER='7213ec6894a6f368375a290de81c17f56190c20e'
 
 # golang variables
 ARG GO111MODULE='on'
-ARG GOLANGVER='1.16'
-ARG GOLANGSHA="013a489ebb3e24ef3d915abe5b94c3286c070dfe0818d5bca8108f1d6e8440d2"
+ARG GOLANGVER='1.20.2'
+ARG GOLANGSHA="4eaea32f59cde4dc635fbc42161031d13e1c780b87097f4b4234cfce671f1768"
 ARG GOPATH='/go'
 ENV PATH=${PATH}:/usr/local/go/bin:/go/bin
 
@@ -47,7 +47,8 @@ RUN apt-get update && apt-get install -y \
 USER golang
 
 # create dir structure for luks2crypt build
-RUN mkdir -p /go/src/github.com/square/luks2crypt
+RUN mkdir -p /go/src/github.com/square/luks2crypt \
+    && git config --global --add safe.directory /go/src/github.com/square/luks2crypt
 WORKDIR /go/src/github.com/square/luks2crypt
 
 # copy in files

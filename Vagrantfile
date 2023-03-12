@@ -3,7 +3,7 @@
 
 $golang_install = <<-SCRIPT
 set -ux
-GOLANGVER=1.16
+GOLANGVER=1.20.2
 GOLANGTAR=https://dl.google.com/go/go${GOLANGVER}.linux-amd64.tar.gz
 
 pushd /tmp
@@ -60,8 +60,12 @@ Vagrant.configure("2") do |config|
     bionic.vm.box = "ubuntu/bionic64"
   end
 
-  config.vm.define "focal", primary: true do |focal|
+  config.vm.define "focal", primary: false do |focal|
     focal.vm.box = "ubuntu/focal64"
+  end
+
+  config.vm.define "focal", primary: true do |focal|
+    focal.vm.box = "ubuntu/jammy64"
   end
 
   config.vm.define "xenial", autostart: false do |xenial|
