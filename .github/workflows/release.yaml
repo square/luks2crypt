@@ -21,6 +21,10 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
 
+      - name: Install dependencies
+        run: |
+          sudo apt update && sudo apt install -y libcryptsetup-dev
+
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v4
         with:
