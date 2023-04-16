@@ -42,7 +42,7 @@ func (d testDisk) create(t *testing.T) {
 		LuksVersion: d.luksVersion,
 	}
 
-	disk, err := diskfs.Create(d.path, d.size, diskfs.Raw)
+	disk, err := diskfs.Create(d.path, d.size, diskfs.Raw, diskfs.SectorSizeDefault)
 	if err != nil {
 		t.Fatalf("error creating test disk: %v", err)
 	}
