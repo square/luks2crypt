@@ -1,6 +1,6 @@
 module github.com/square/luks2crypt
 
-go 1.20
+go 1.21
 
 require (
 	github.com/diskfs/go-diskfs v1.4.0

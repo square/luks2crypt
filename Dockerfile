@@ -5,8 +5,8 @@ ARG LUKS2CRYPT_VER='7213ec6894a6f368375a290de81c17f56190c20e'
 
 # golang variables
 ARG GO111MODULE='on'
-ARG GOLANGVER='1.20.2'
-ARG GOLANGSHA="4eaea32f59cde4dc635fbc42161031d13e1c780b87097f4b4234cfce671f1768"
+ARG GOLANGVER='1.21.5'
+ARG GOLANGSHA="e2bc0b3e4b64111ec117295c088bde5f00eeed1567999ff77bc859d7df70078e"
 ARG GOPATH='/go'
 ENV PATH=${PATH}:/usr/local/go/bin:/go/bin
 
@@ -21,7 +21,7 @@ RUN adduser --shell /bin/sh --system --group \
 RUN apt-get update && apt-get install -y \
       wget \
       ca-certificates \
-    && wget --no-verbose "https://dl.google.com/go/go${GOLANGVER}.linux-amd64.tar.gz" \
+    && wget --no-verbose "https://go.dev/dl/go${GOLANGVER}.linux-amd64.tar.gz" \
     && echo "${GOLANGSHA} *go${GOLANGVER}.linux-amd64.tar.gz" > go${GOLANGVER}.linux-amd64.tar.gz.shasum \
     && sha256sum -c go${GOLANGVER}.linux-amd64.tar.gz.shasum \
     && tar -C /usr/local -xzf go${GOLANGVER}.linux-amd64.tar.gz \
