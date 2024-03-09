@@ -24,8 +24,6 @@ build:
 	$(GOBUILD) $(LDFLAGS) -o $(BINPATH)/$(BINARY_NAME) -v ./cmd/$(BINARY_NAME)
 
 lint:
-	GO111MODULE=off go get -u golang.org/x/lint/golint
-	golint -set_exit_status ./...
 	go vet ./...
 
 test:
