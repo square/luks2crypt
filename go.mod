@@ -5,7 +5,7 @@ go 1.22
 require (
 	github.com/diskfs/go-diskfs v1.4.0
 	github.com/dselans/dmidecode v0.0.0-20180814053009-65c3f9d81910
-	github.com/gorilla/schema v1.2.1
+	github.com/gorilla/schema v1.3.0
 	github.com/sethvargo/go-diceware v0.3.0
 	golang.org/x/crypto v0.21.0
 	gopkg.in/urfave/cli.v1 v1.20.0
