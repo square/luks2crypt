@@ -21,5 +21,8 @@
 	// "remoteUser": "root"
 
 	// install development dependencies for cgo
-	"postCreateCommand": "sudo apt update && sudo apt install --yes libcryptsetup-dev && git config --global --add safe.directory /workspaces/luks2crypt"
+	"postCreateCommand": "sudo apt update && sudo apt install --yes libcryptsetup-dev && git config --global --add safe.directory /workspaces/luks2crypt",
+	"features": {
+		"ghcr.io/devcontainers/features/github-cli:1": {}
+	}
 }
