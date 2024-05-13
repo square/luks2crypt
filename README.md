@@ -102,6 +102,29 @@ through cgo to manage the encrypted devices. On debian/ubuntu you can run:
   You should then see the form post data printed to stdout from
   `cryptservermock`.
 
+Releasing
+---------
+
+This repo uses the [relase-please](https://github.com/googleapis/release-please)
+action. Release please leverages [conventional commits](https://www.conventionalcommits.org)
+formatting to automatically collect release notes to create the next semver tag.
+Once the release pr is merged release please will tag the next version and run
+goreleaser which will automatically build the binaries and attach them to the
+github release. The release pr will continue to collect changes since the last
+time a release was tagged.
+
+1. Create and merge any number of prs to main following conventional commits
+formatting. You can continue to merge changes to main and release please will
+continue to append changes to the open release pr since the last release was
+tagged.
+2. When you are ready to release the changes created in step 1,
+[merge the open release pr](https://github.com/square/luks2crypt/labels/autorelease%3A%20pending).
+This will trigger CI to create a new tag and github release. CI will also run
+[goreleaser](https://goreleaser.com) which will build the binaries and update
+the github release with the artifacts.
+3. The changes merged in step 1 are now available on the
+[latest github release](https://github.com/square/luks2crypt/releases/latest)
+
 License
 -------
 
