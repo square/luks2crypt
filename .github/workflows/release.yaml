@@ -2,16 +2,28 @@ name: Release
 
 on:
   push:
-    tags: [ 'v*' ]
+    branches:
+      - main
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+    steps:
+      - id: release
+        uses: google-github-actions/release-please-action@v4
+        with:
+          release-type: simple
 
   goreleaser:
     runs-on: ubuntu-latest
-
+    needs: release-please
+    if: ${{ needs.release-please.outputs.releases_created == 'true' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
