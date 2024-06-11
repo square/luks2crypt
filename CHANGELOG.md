@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/square/luks2crypt/compare/v0.5.0...v0.5.1) (2024-06-11)
+
+
+### Bug Fixes
+
+* update goreleaser to v2, use supported action ([#112](https://github.com/square/luks2crypt/issues/112)) ([00ece7d](https://github.com/square/luks2crypt/commit/00ece7df719049666547e773c2045818c8f0e9d4))
+
 ## [0.5.0](https://github.com/square/luks2crypt/compare/v0.4.8...v0.5.0) (2024-05-13)
 
 
