@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/square/luks2crypt/compare/v0.5.2...v0.6.0) (2025-02-25)
+
+
+### Features
+
+* **deps:** bump golang.org/x/crypto from 0.33.0 to 0.34.0 ([#133](https://github.com/square/luks2crypt/issues/133)) ([88d4614](https://github.com/square/luks2crypt/commit/88d4614106dc116f2d0c4f62325f378dafca1da0))
+
 ## [0.5.2](https://github.com/square/luks2crypt/compare/v0.5.1...v0.5.2) (2024-12-23)
 
 
