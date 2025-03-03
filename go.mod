@@ -5,7 +5,7 @@ go 1.23.0
 toolchain go1.23.4
 
 require (
-	github.com/diskfs/go-diskfs v1.5.0
+	github.com/diskfs/go-diskfs v1.5.1
 	github.com/dselans/dmidecode v0.0.0-20180814053009-65c3f9d81910
 	github.com/gorilla/schema v1.4.1
 	github.com/sethvargo/go-diceware v0.5.0

@@ -1,8 +1,8 @@
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/diskfs/go-diskfs v1.5.0 h1:0SANkrab4ifiZBytk380gIesYh5Gc+3i40l7qsrYP4s=
-github.com/diskfs/go-diskfs v1.5.0/go.mod h1:bRFumZeGFCO8C2KNswrQeuj2m1WCVr4Ms5IjWMczMDk=
+github.com/diskfs/go-diskfs v1.5.1 h1:Mnzgx3ERI+lzGzDAV+ejFLj/Uz9Cs/7wDkaAXwH1RMk=
+github.com/diskfs/go-diskfs v1.5.1/go.mod h1:bRFumZeGFCO8C2KNswrQeuj2m1WCVr4Ms5IjWMczMDk=
 github.com/djherbis/times v1.6.0 h1:w2ctJ92J8fBvWPxugmXIv7Nz7Q3iDMKNx9v5ocVH20c=
 github.com/djherbis/times v1.6.0/go.mod h1:gOHeRAz2h+VJNZ5Gmc/o7iD9k4wW7NMVqieYCY99oc0=
 github.com/dselans/dmidecode v0.0.0-20180814053009-65c3f9d81910 h1:w9T/rS5VP0SPXqYr7BpUeqf6ukp/GEWm6nXhziWzBY4=
