@@ -9,7 +9,7 @@ require (
 	github.com/dselans/dmidecode v0.0.0-20180814053009-65c3f9d81910
 	github.com/gorilla/schema v1.4.1
 	github.com/sethvargo/go-diceware v0.5.0
-	golang.org/x/crypto v0.39.0
+	golang.org/x/crypto v0.40.0
 	gopkg.in/urfave/cli.v1 v1.20.0
 )
 
@@ -22,6 +22,6 @@ require (
 	github.com/pkg/xattr v0.4.10 // indirect
 	github.com/sirupsen/logrus v1.9.4-0.20230606125235-dd1b4c2e81af // indirect
 	github.com/ulikunitz/xz v0.5.12 // indirect
-	golang.org/x/sys v0.33.0 // indirect
-	golang.org/x/term v0.32.0 // indirect
+	golang.org/x/sys v0.34.0 // indirect
+	golang.org/x/term v0.33.0 // indirect
 )
