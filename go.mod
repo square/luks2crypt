@@ -1,11 +1,11 @@
 module github.com/square/luks2crypt
 
-go 1.23.0
+go 1.24.0
 
 toolchain go1.24.1
 
 require (
-	github.com/diskfs/go-diskfs v1.6.0
+	github.com/diskfs/go-diskfs v1.7.0
 	github.com/dselans/dmidecode v0.0.0-20180814053009-65c3f9d81910
 	github.com/gorilla/schema v1.4.1
 	github.com/sethvargo/go-diceware v0.5.0
@@ -14,6 +14,7 @@ require (
 )
 
 require (
+	github.com/anchore/go-lzo v0.1.0 // indirect
 	github.com/djherbis/times v1.6.0 // indirect
 	github.com/elliotwutingfeng/asciiset v0.0.0-20240214025120-24af97c84155 // indirect
 	github.com/google/uuid v1.6.0 // indirect
