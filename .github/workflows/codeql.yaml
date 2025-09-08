@@ -46,7 +46,7 @@ jobs:
       run: |
         sudo apt update && sudo apt install -y libcryptsetup-dev
 
-    - uses: actions/setup-go@v5
+    - uses: actions/setup-go@v6
       with:
         go-version-file: 'go.mod'
 
