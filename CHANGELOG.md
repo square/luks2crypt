@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/square/luks2crypt/compare/v0.6.0...v0.7.0) (2026-02-24)
+
+
+### Features
+
+* **deps:** bump goreleaser/goreleaser-action from 6 to 7 ([#157](https://github.com/square/luks2crypt/issues/157)) ([ad2f980](https://github.com/square/luks2crypt/commit/ad2f980958cfffe36da1ac25e02a8820974c8336))
+
 ## [0.6.0](https://github.com/square/luks2crypt/compare/v0.5.2...v0.6.0) (2025-02-25)
 
 
