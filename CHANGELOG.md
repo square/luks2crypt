@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/square/luks2crypt/compare/v0.7.0...v0.8.0) (2026-02-24)
+
+
+### Features
+
+* use pinned action SHAs for CI workflows ([#159](https://github.com/square/luks2crypt/issues/159)) ([46c6526](https://github.com/square/luks2crypt/commit/46c65264d003e65d69d4c077fc7e59bea13e2470))
+
 ## [0.7.0](https://github.com/square/luks2crypt/compare/v0.6.0...v0.7.0) (2026-02-24)
 
 
