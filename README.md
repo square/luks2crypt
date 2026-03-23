@@ -1,7 +1,7 @@
 Luks2Crypt
 ==========
 
-- https://golang.org/cmd/cgo/
+- https://pkg.go.dev/cmd/cgo
 
 - https://gitlab.com/cryptsetup/cryptsetup/-/blob/v2.2.2/lib/libcryptsetup.h
 
@@ -54,7 +54,7 @@ If you omit the password, luk2crypt will prompt for one.
 Development
 -----------
 
-- This repository uses go modules (https://github.com/golang/go/wiki/Modules).
+- This repository uses go modules (https://go.dev/doc/modules).
 You should be able to simply `go get` the repo and the dependencies will
 auto install. You will need to be using go version 1.11 or higher.
 
