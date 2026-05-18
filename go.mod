@@ -3,7 +3,7 @@ module github.com/square/luks2crypt
 go 1.25.7
 
 require (
-	github.com/diskfs/go-diskfs v1.9.2
+	github.com/diskfs/go-diskfs v1.9.3
 	github.com/dselans/dmidecode v0.0.0-20180814053009-65c3f9d81910
 	github.com/gorilla/schema v1.4.1
 	github.com/sethvargo/go-diceware v0.5.0
