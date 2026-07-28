@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/square/luks2crypt/compare/v0.8.0...v0.8.1) (2026-07-28)
+
+
+### Bug Fixes
+
+* **ci:** disable setup-go cache for tags ([#209](https://github.com/square/luks2crypt/issues/209)) ([5edf164](https://github.com/square/luks2crypt/commit/5edf164ff47432799a0e9b1c7a985bdb6066e9af)), closes [#6](https://github.com/square/luks2crypt/issues/6)
+
 ## [0.8.0](https://github.com/square/luks2crypt/compare/v0.7.0...v0.8.0) (2026-02-24)
 
 
