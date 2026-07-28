@@ -18,9 +18,16 @@ updates:
       interval: "weekly"
     cooldown:
       default-days: 7
+    groups:
+      # Codeql typically has three actions that need to run. These actions all need to be the same version.
+      # If each version is updated independantly codeql will fail CI. The below config will group all of the
+      # codeql updates into a single pr making it possible for CI to pass.
+      codeql-action:
+        patterns:
+          - "github/codeql-action/*"
 
-  - package-ecosystem: "gomod" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "gomod"
+    directory: "/"
     schedule:
       interval: "weekly"
     cooldown:
