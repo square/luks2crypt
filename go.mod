@@ -1,13 +1,13 @@
 module github.com/square/luks2crypt
 
-go 1.25.7
+go 1.26.0
 
 require (
 	github.com/diskfs/go-diskfs v1.9.4
 	github.com/dselans/dmidecode v0.0.0-20180814053009-65c3f9d81910
 	github.com/gorilla/schema v1.4.1
 	github.com/sethvargo/go-diceware v0.6.0
-	golang.org/x/crypto v0.55.0
+	golang.org/x/crypto v0.56.0
 	gopkg.in/urfave/cli.v1 v1.20.0
 )
 
